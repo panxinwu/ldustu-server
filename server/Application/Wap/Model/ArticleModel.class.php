@@ -54,9 +54,12 @@ class ArticleModel extends RelationModel{
             $user = M('user');
             $comment = M('comment');
             $error = 0;
+            if($cid == 0){
+              $cid = '';
+            }
             $where = array(   //构造取值条件
                 'ismake' => 1,
-                'clu_id' => $cid,
+                'cid' => $cid,
                );
             $result =  $this->limit($startid,$getnum)->where($where)->order('time desc')->select();
             $listNum = count($result);
@@ -89,9 +92,7 @@ class ArticleModel extends RelationModel{
                         }else{
                           $comEnd = false;
                         }
-                       $new[$key]['cominfo'] = array(
-                                  $cominfo,
-                        );
+                       $new[$key]['cominfo'] = $cominfo;
                        $new[$key]['comEnd'] = $comEnd;
                        $new[$key]['comListNum'] = $comListNum;
             }
@@ -105,6 +106,7 @@ class ArticleModel extends RelationModel{
                                   'artListNum' =>$listNum,
                             );	
                          return  $Output;
+                        // var_dump($Output);
            
         	}
             

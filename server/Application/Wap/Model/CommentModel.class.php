@@ -28,7 +28,16 @@ class CommentModel extends Model{
 		$result['error'] = $returnJson['error'];
 		return $result;
 	}
+	
 	public function comment($uid,$aid,$content ){	//评论动作
+		$arr['content'] = $content;
+		$rules = array(
+		    array('content','length','评论超出长度!',1,'1,2')
+		 );
+		if(!$this->validate($rules)->create($arr)){
+			//var_dump($this->getError());
+		     return $this->getError();
+		}
 		if( !isset($uid)||!isset($aid)||!isset($content) ){
 			$returnJson=array(
 			'error'=>1001,
