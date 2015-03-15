@@ -33,6 +33,7 @@ class IndexController extends Controller {
                     $user = D('user');
                     $where['id'] = isset($id) ? $id : $cookie_id;
                     $userResult = $user->where($where)->select();
+                    // var_dump($userResult);
                     session('id',$userResult['id']);
                     if($cookieTime){
                               $data = $userResult['id'];
@@ -47,11 +48,11 @@ class IndexController extends Controller {
                }
           	$column = D('column');
                $returnJson['column'] = $column ->getall();
-
+               // $this->returnJson = json_encode($returnJson);
                // var_dump($returnJson);
                // $this->ajaxReturn($returnJson);
-               $this->assign('column',$returnJson['column']);
-               $this->assign('userResult',$returnJson['userResult']);
+               $this->assign('column',json_encode($returnJson['column']));
+               $this->assign('userResult',json_encode($returnJson['userResult']));
                $this->display();
           }
 }

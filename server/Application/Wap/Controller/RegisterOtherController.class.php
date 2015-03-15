@@ -10,18 +10,12 @@ class RegisterOtherController extends Controller {
 	public function register(){
 		// var_dump($this->checktelphone(I('post.tel')));
 		if($this->checktelphone(I('post.tel')) == 0){ //判断手机
-			if($this->checkMail(I('post.mail')) == 0){
+			if($this->checkMail(I('post.email')) == 0){
 				if($this->checkPswd(I('post.password')) == 0){
-					$username = I('post.username');
-					$qq = I('post.qq');
-					$password =  I('post.mail');
-					$tel =  I('post.tel');
-					$password =  I('post.password');
-					$time = time();
-					$loginWay = LoginStyle();
+					if($this->checkName(I('post.username')) == 0){
 					$data = array(
 						'username' =>I('post.username'),
-						'passwd' =>md5(I('post.username')),
+						'passwd' =>md5(I('post.passwd')),
 						'email' =>I('post.email'),
 						'qq' =>I('post.qq'),
 						'telphone' =>I('post.telphone'),
@@ -36,6 +30,9 @@ class RegisterOtherController extends Controller {
 					$result = $user->data($data)->add();
 					session('id',$result);
 					$returnJson['error'] = 0;
+				}else{
+					$returnJson['error'] = 1002;
+				}
 				}else{
 					$returnJson['error'] = 1006;
 				}
@@ -64,20 +61,25 @@ class RegisterOtherController extends Controller {
 		$user = D('user');
 		$where['username'] = $username; 
 		$result = $user->where($where)->count();
-		if($result&&$result!=''){
+		if($result == 0){
 			$returnJson['error'] = 0;
 		}else{
 			$returnJson['error'] = 1002;
 		}
 		return $returnJson[error];
 	}
-	public function checkMail($mail){
+	public function checkMail($email){
 		$pattern_test = "/([a-z0-9]*[-_.]?[a-z0-9]+)*@([a-z0-9]*[-_]?[a-z0-9]+)+[.][a-z]{2,3}([.][a-z]{2})?/i";
 		$result = preg_match($pattern_test,$mail);
 		if($result = 1){
-			$returnJson['error'] = 0;
-		}else{
-			$returnJson['error'] = 1007;
+			$user = D('user');
+			$where['email'] = $email; 
+			$result2 = $user->where($where)->count();
+			if($result2 == 0){
+				$returnJson['error'] = 0;
+			}else{
+				$returnJson['error'] = 1002;
+			}
 		}
 		return $returnJson[error];
 	}

@@ -32,7 +32,7 @@ class CommentModel extends Model{
 	public function comment($uid,$aid,$content ){	//评论动作
 		$arr['content'] = $content;
 		$rules = array(
-		    array('content','length','评论超出长度!',1,'1,2')
+		    array('content','length','1',1,'1,200')
 		 );
 		if(!$this->validate($rules)->create($arr)){
 			//var_dump($this->getError());

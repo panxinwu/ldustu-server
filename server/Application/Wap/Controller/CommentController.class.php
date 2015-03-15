@@ -23,8 +23,11 @@ class CommentController extends Controller { //评论模块
 		$uid = session('id');
 		if($uid&&$uid!=''){
 			$result = $comment->comment($uid,$aid,$content);
-			if($result == "评论超出长度!"){
-				$this->ajaxReturn(1011);
+			if($result == "1"){
+				$result = array(
+				'data'=>'超出字数限制！',
+				'error'=>1011,
+				);
 			}
 			
 		}else{
